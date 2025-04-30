@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>반려동물 리액션 게임 v1</title>
+  <!-- 풀-프리로드: 모든 영상 사전 로드 -->
+  <link rel="preload" as="video" href="assets/idle.mp4" type="video/mp4">
+  <link rel="preload" as="video" href="assets/reaction_01.mp4" type="video/mp4">
+  <link rel="preload" as="video" href="assets/reaction_02.mp4" type="video/mp4">
+  <link rel="preload" as="video" href="assets/reaction_03.mp4" type="video/mp4">
+  <link rel="preload" as="video" href="assets/reaction_04.mp4" type="video/mp4">
+  <style>
+    /* Reset & background */
+    html, body { margin:0; padding:0; width:100%; height:100%; }
+    body { display:flex; justify-content:center; background:#ece9d1; }
+
+    /* Container */
+    .container {
+      width:100vw;
+      max-width:720px;
+      display:flex; flex-direction:column;
+      background:#ece9d1;
+    }
+    /* Mobile: full viewport */
+    @media (max-width:767px) {
+      .container { height:100vh; margin:0 auto; }
+    }
+    /* Desktop: fixed 60vh, top-aligned */
+    @media (min-width:768px) {
+      .container {
+        height:60vh;      /* 화면 높이의 60% */
+        margin:0 auto;    /* top 0, centered horizontally */
+      }
+    }
+
+    /* Bottom fixed margin only */
+    .section-margin {
+      flex:0 0 80px;      /* 기본 80px 하단 여백 */
+    }
+    @media (min-width:768px) {
+      .section-margin {
+        flex:0 0 40px;    /* PC에서 40px */
+      }
+    }
+
+    /* Header image */
+    .header-img {
+      flex:0 0 140px;
+      width:100%; height:140px;
+      object-fit:contain;
+      object-position:center;
+      background:#ece9d1;
+    }
+
+    /* Video area square */
+    .video-wrap {
+      position:relative; width:100%; flex:0 0 auto;
+    }
+    .video-wrap::before { content:''; display:block; padding-bottom:100%; }
+    .video-wrap video {
+      position:absolute; top:0; left:0;
+      width:100%; height:100%; object-fit:cover;
+    }
+    #action { opacity:0; transition:opacity .15s ease-in-out; }
+
+    /* FX overlay */
+    .fx {
+      position:absolute; inset:0; margin:auto; width:60%; opacity:0;
+      pointer-events:none; transition:opacity .2s ease-out;
+    }
+    .fx.show { opacity:1; }
+
+    /* Controls grid */
+    .controls {
+      flex:0 0 auto;
+      display:grid; grid-template-columns:repeat(4,1fr);
+      gap:10px; padding:10px;
+    }
+    .btn {
+      width:100%; aspect-ratio:180/220;
+      background-size:contain; background-repeat:no-repeat;
+      background-position:center; border:none;
+    }
+    .btn:active { transform:scale(0.98); }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <img src="assets/top.png" alt="Header" class="header-img">
+    <div class="video-wrap">
+      <video id="idle" autoplay muted loop playsinline preload="auto" src="assets/idle.mp4"></video>
+      <video id="action" muted playsinline></video>
+      <img id="fx" class="fx" src="assets/fx_success.png" alt="성공!">
+    </div>
+    <div class="controls">
+      <button id="btn1" class="btn" style="background-image:url('assets/button_01.png')" data-src="assets/reaction_01.mp4" data-down="assets/button_01_down.png" data-up="assets/button_01.png"></button>
+      <button id="btn2" class="btn" style="background-image:url('assets/button_02.png')" data-src="assets/reaction_02.mp4" data-down="assets/button_02_down.png" data-up="assets/button_02.png"></button>
+      <button id="btn3" class="btn" style="background-image:url('assets/button_03.png')" data-src="assets/reaction_03.mp4" data-down="assets/button_03_down.png" data-up="assets/button_03.png"></button>
+      <button id="btn4" class="btn" style="background-image:url('assets/button_04.png')" data-src="assets/reaction_04.mp4" data-down="assets/button_04_down.png" data-up="assets/button_04.png"></button>
+    </div>
+    <div class="section-margin"></div>
+  </div>
+  <script>
+    const idle = document.getElementById('idle');
+    const action = document.getElementById('action');
+    const fx = document.getElementById('fx');
+    const buttons = document.querySelectorAll('.btn');
+    // Preload videos
+    ['reaction_01.mp4','reaction_02.mp4','reaction_03.mp4','reaction_04.mp4'].forEach(src => { const v = document.createElement('video'); v.src = 'assets/'+src; v.preload='auto'; });
+    buttons.forEach(btn=>{
+      btn.addEventListener('pointerdown',()=>{ btn.style.backgroundImage=`url('${btn.dataset.down}')`; playReaction(btn.dataset.src); });
+      btn.addEventListener('pointerup',()=>{ btn.style.backgroundImage=`url('${btn.dataset.up}')`; });
+    });
+    function playReaction(src){ idle.pause(); action.src=src; action.currentTime=0; action.onloadeddata=()=>{ action.style.opacity=1; action.play(); }; action.onended=()=>{ action.style.opacity=0; showFx(); idle.play(); }; }
+    function showFx(){ fx.classList.add('show'); setTimeout(()=>fx.classList.remove('show'),1200); }
+  </script>
+</body>
+</html>
