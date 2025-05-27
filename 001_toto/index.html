@@ -56,20 +56,19 @@
   top: 87.2%;
   width: 100%;
   text-align: center;
-  font-size: 1.1vw; /* 기본값: 반응형 */
+  font-size: 14px; /* 기본값: 모바일 기준 */
   color: #3a7b2e;
 }
 
-/* 너무 작아지지 않도록 최소값 설정 */
-@media (max-width: 480px) {
+@media (min-width: 768px) {
   #counter {
-    font-size: 14px;  /* 모바일 - 작게 */
+    font-size: 20px; /* 태블릿 이상 */
   }
 }
 
 @media (min-width: 1024px) {
   #counter {
-    font-size: 26px;  /* 데스크탑 - 크게 */
+    font-size: 24px; /* 데스크탑 이상에서 확실히 크게 */
   }
 }
   </style>
