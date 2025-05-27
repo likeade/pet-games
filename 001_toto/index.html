@@ -56,9 +56,22 @@
   top: 87.2%;
   width: 100%;
   text-align: center;
-  font-size: 26px !important;
+  font-size: 18px;
   color: #3a7b2e;
-  line-height: 1.4;
+}
+
+/* 모바일 (가로폭 480px 이하) → 작게 */
+@media (max-width: 480px) {
+  #counter {
+    font-size: 14px !important;
+  }
+}
+
+/* 데스크탑 (가로폭 1024px 이상) → 크게 */
+@media (min-width: 1024px) {
+  #counter {
+    font-size: 26px !important;
+  }
 }
   </style>
 </head>
