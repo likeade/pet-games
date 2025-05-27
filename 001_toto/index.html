@@ -51,14 +51,27 @@
     #tributeBtn:active {
       background-image: url('assets/button_01_down.png');
     }
-    #counter {
-      position: absolute;
-      top: 85%;
-      width: 100%;
-      text-align: center;
-      font-size: 18px;
-      color: #3a7b2e;
-    }
+#counter {
+  position: absolute;
+  top: 87.2%;
+  width: 100%;
+  text-align: center;
+  font-size: 1.1vw; /* 기본값: 반응형 */
+  color: #3a7b2e;
+}
+
+/* 너무 작아지지 않도록 최소값 설정 */
+@media (max-width: 480px) {
+  #counter {
+    font-size: 14px;  /* 모바일 - 작게 */
+  }
+}
+
+@media (min-width: 1024px) {
+  #counter {
+    font-size: 20px;  /* 데스크탑 - 크게 */
+  }
+}
   </style>
 </head>
 <body>
